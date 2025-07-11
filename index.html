@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhotoBooth - Capture & Create</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📸 PhotoBooth</h1>
+            <p>Capture memories with style</p>
+        </header>
+
+        <main>
+            <div class="camera-section">
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                </div>
+                
+                <div class="filters-section">
+                    <h3>🎨 Choose Your Vibe</h3>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="none">✨ Original</button>
+                        <button class="filter-btn" data-filter="grayscale">🖤 B&W</button>
+                        <button class="filter-btn" data-filter="sepia">🍂 Sepia</button>
+                        <button class="filter-btn" data-filter="vintage">📷 Vintage</button>
+                        <button class="filter-btn" data-filter="cool">❄️ Cool</button>
+                        <button class="filter-btn" data-filter="warm">🔥 Warm</button>
+                        <button class="filter-btn" data-filter="neon">💚 Neon</button>
+                        <button class="filter-btn" data-filter="purple">💜 Purple</button>
+                        <button class="filter-btn" data-filter="cyberpunk">🤖 Cyber</button>
+                        <button class="filter-btn" data-filter="sunset">🌅 Sunset</button>
+                        <button class="filter-btn" data-filter="ocean">🌊 Ocean</button>
+                        <button class="filter-btn" data-filter="forest">🌲 Forest</button>
+                        <button class="filter-btn" data-filter="noir">🎭 Noir</button>
+                        <button class="filter-btn" data-filter="dream">☁️ Dream</button>
+                        <button class="filter-btn" data-filter="retro">🕺 Retro</button>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="captureBtn" class="capture-btn">📷 Capture Photo</button>
+                    <div class="photo-counter">
+                        <span id="photoCount">0</span>/3 photos taken
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-section">
+                <h3>Your Photos</h3>
+                <div id="photoGallery" class="photo-gallery"></div>
+                
+                <div class="action-buttons">
+                    <button id="reshootBtn" class="action-btn secondary" disabled>🔄 Reshoot</button>
+                    <button id="downloadBtn" class="action-btn primary" disabled>⬇️ Download Strip</button>
+                </div>
+            </div>
+
+            <div id="collagePreview" class="collage-preview" style="display: none;">
+                <canvas id="collageCanvas"></canvas>
+            </div>
+        </main>
+
+        <footer>
+            <p>Developed with ❤️ by <strong>Hirachand</strong></p>
+        </footer>
+    </div>
+
+    <div id="permissionModal" class="modal">
+        <div class="modal-content">
+            <h2>📷 Camera Permission Required</h2>
+            <p>This app needs access to your camera to take photos. Please allow camera access when prompted.</p>
+            <button id="requestPermission" class="action-btn primary">Grant Permission</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
