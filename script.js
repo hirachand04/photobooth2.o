@@ -12,10 +12,15 @@ class PhotoBooth {
         this.collageCtx = this.collageCanvas.getContext('2d');
         this.permissionModal = document.getElementById('permissionModal');
         this.requestPermissionBtn = document.getElementById('requestPermission');
+        this.nameModal = document.getElementById('nameModal');
+        this.userNameInput = document.getElementById('userName');
+        this.skipNameBtn = document.getElementById('skipName');
+        this.confirmNameBtn = document.getElementById('confirmName');
         
         this.photos = [];
         this.currentFilter = 'none';
         this.stream = null;
+        this.userName = '';
         
         this.init();
     }
@@ -30,6 +35,15 @@ class PhotoBooth {
         this.reshootBtn.addEventListener('click', () => this.reshoot());
         this.downloadBtn.addEventListener('click', () => this.downloadCollage());
         this.requestPermissionBtn.addEventListener('click', () => this.requestCameraPermission());
+        this.skipNameBtn.addEventListener('click', () => this.skipName());
+        this.confirmNameBtn.addEventListener('click', () => this.confirmName());
+        
+        // Enter key support for name input
+        this.userNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.confirmName();
+            }
+        });
         
         // Filter buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -113,9 +127,9 @@ class PhotoBooth {
         this.updateUI();
         this.displayPhoto(photoData, this.photos.length - 1);
         
-        // Create collage if 3 photos taken
+        // Show name modal if 3 photos taken
         if (this.photos.length === 3) {
-            this.createCollage();
+            this.showNameModal();
         }
     }
     
@@ -211,6 +225,9 @@ class PhotoBooth {
         // Hide collage if less than 3 photos
         if (this.photos.length < 3) {
             document.getElementById('collagePreview').style.display = 'none';
+        } else if (this.photos.length === 3 && this.userName) {
+            // Recreate collage if we have a name
+            this.createCollage();
         }
     }
     
@@ -225,9 +242,33 @@ class PhotoBooth {
     
     reshoot() {
         this.photos = [];
+        this.userName = '';
+        this.userNameInput.value = '';
         this.photoGallery.innerHTML = '';
         document.getElementById('collagePreview').style.display = 'none';
+        this.nameModal.style.display = 'none';
         this.updateUI();
+    }
+    
+    showNameModal() {
+        this.nameModal.style.display = 'flex';
+        this.userNameInput.focus();
+    }
+    
+    hideNameModal() {
+        this.nameModal.style.display = 'none';
+    }
+    
+    skipName() {
+        this.userName = '';
+        this.hideNameModal();
+        this.createCollage();
+    }
+    
+    confirmName() {
+        this.userName = this.userNameInput.value.trim() || '';
+        this.hideNameModal();
+        this.createCollage();
     }
     
     createCollage() {
@@ -309,11 +350,12 @@ class PhotoBooth {
             
             const bottomTextY = margin + (3 * (photoHeight + photoSpacing)) + 60;
             
-            // Title
-            this.collageCtx.fillStyle = '#333333';
-            this.collageCtx.font = 'bold 24px "Segoe UI", Arial';
-            this.collageCtx.textAlign = 'center';
-            this.collageCtx.fillText('College Wishlist', collageWidth / 2, bottomTextY);
+            // User name or default text
+             this.collageCtx.fillStyle = '#333333';
+             this.collageCtx.font = 'bold 24px "Segoe UI", Arial';
+             this.collageCtx.textAlign = 'center';
+             const displayName = this.userName || 'My Memories';
+             this.collageCtx.fillText(displayName, collageWidth / 2, bottomTextY);
             
             // Date
             this.collageCtx.font = '18px "Segoe UI", Arial';
